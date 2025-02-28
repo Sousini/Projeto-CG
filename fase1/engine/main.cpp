@@ -1,4 +1,6 @@
 #include "tinyxml2.h"
+#include <vector>
+#include <string>
 
 
 
@@ -30,6 +32,58 @@ void changeSize(int w, int h) {
 }
 
 
+
+
+struct WindowData {
+    int width;
+    int height;
+};
+
+struct Position {
+    float x;
+    float y;
+    float z;
+};
+
+struct LookAt {
+    float x;
+    float y;
+    float z;
+};
+
+
+struct Up {
+    float x;
+    float y;
+    float z;
+};
+
+
+struct Projection {
+    float fov;
+    float near;
+    float far;
+};
+
+
+
+struct CameraData {
+    Position position;
+    LookAt lookAt;
+    Up up;
+    Projection projection;
+};
+
+struct WorldData {
+    WindowData window;
+    CameraData camera;
+    
+};
+
+
+
+
+
 void parseXML(const std::string &teste_xml) {
     std::string path = "..\\..\\testes";
     path += teste_xml;
@@ -41,62 +95,105 @@ void parseXML(const std::string &teste_xml) {
 
 
 
-    XMLElement* world = doc.FirstChildElement("world");
+    XMLElement* pworld = doc.FirstChildElement("world");
 
-    if(!world) {
-        std::cerr << "No world element found" << std::endl;
-        return -1;
-    }
-
-
-    //falta criar as structs para preencher com os atributos
-    XMLElement* window = world->FirstChildElement("window");
-    if (window == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-
-    XMLElement* camera = world->FirstChildElement("camera");
-    if (camera == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* position = camera->FirstChildElement("position");
-    if (position == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* lookAt = camera->FirstChildElement("lookAt");
-    if (lookAt == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* up = camera->FirstChildElement("up");
-    if (up == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* projection = camera->FirstChildElement("projection");
-    if (projection == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* group  = world->FirstChildElement("group");
-    if (group == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* transform = group->FirstChildElement("transform");
-    if (transform == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* translate = transform->FirstChildElement("translate");
-    if (translate == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* rotate = transform->FirstChildElement("rotate");
-    if (rotate == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* scale = transform->FirstChildElement("scale");
-    if (scale == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* models = group->FirstChildElement("models");
-    if (models == nullptr) return XML_ERROR_PARSING_ELEMENT;
-
-    XMLElement* modelList = models -> FirstChildElement("model");
-    std::vector<Model> modelVector;
-    while(modelList != nullptr) {
+    if(pworld) {
         
+        XMLElement* pwindow = world->FirstChildElement("window");
+        if (pwindow) {
+            
+            window->QueryIntAttribute("width", &windowdata.width);
+            window->QueryIntAttribute("height", &windowdata.height);
+        }
+    
+        
+        XMLElement* pcamera = world->FirstChildElement("camera");
+        if(pcamera) {
+            
+            XMLElement* position = camera->FirstChildElement("position");
+            if (position) {
+                position->QueryFloatAttribute("x", &cameraData.position.x);
+                position->QueryFloatAttribute("y", &cameraData.position.y);
+                position->QueryFloatAttribute("z", &cameraData.position.z);
+            }
+
+            XMLElement* plookAt = camera->FirstChildElement("lookAt");
+            if (plookAt) {
+                lookAt->QueryFloatAttribute("x", &cameraData.lookAt.x);
+                lookAt->QueryFloatAttribute("y", &cameraData.lookAt.y);
+                lookAt->QueryFloatAttribute("z", &cameraData.lookAt.z);
+            }
+
+            XMLElement* pup = camera->FirstChildElement("up");
+            if (pup) {
+                up->QueryFloatAttribute("x", &cameraData.up.x);
+                up->QueryFloatAttribute("y", &cameraData.up.y);
+                up->QueryFloatAttribute("z", &cameraData.up.z);
+            }
+
+            XMLElement* projection = camera->FirstChildElement("projection");
+            if (projection) {
+                projection->QueryFloatAttribute("fov", &cameraData.projection.fov);
+                projection->QueryFloatAttribute("near", &cameraData.projection.near);
+                projection->QueryFloatAttribute("far", &cameraData.projection.far);
+            }
+        }
+
+        XMLElement* pgroup = world->FirstChildElement("group");
+        if(pgroup) {
+
+            XMLElement* pmodels = group->FirstChildElement("models");
+            std::vector<std::string> files;
+
+
+            if(pmodels) {
+
+                XMLElement* pmodel = models->FirstChildElement("model");
+
+                
+                while(pmodel) {
+                    const char* fileAttr = pmodel->Attribute("file");
+                    if(fileAttr){
+                        files.push_back(fileAttr);
+                    }
+                    
+                    pmodel = pmodel->NextSiblingElement("model");
+                }
+            }
+        }
+    
     }
 
 }
 
 void renderScene() {
 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glLoadIdentity();
+
+    gluLookAt(cameraData.position.x, cameraData.position.y, cameraData.position.z,
+              cameraData.lookAt.x, cameraData.lookAt.y, cameraData.lookAt.z,
+              cameraData.up.x, cameraData.up.y, cameraData.up.z);
+
+    glPolygonMode(GL_FRONT, GL_LINE);
+
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-100.0f, 0.0f, 0.0f);
+	glVertex3f(100.0f, 0.0f, 0.0f);
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.0f, -100.0f, 0.0f);
+	glVertex3f(0.0f, 100.0f, 0.0f);
+
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.0f, 0.0f, -100.0f);
+	glVertex3f(0.0f, 0.0f, 100.0f);
+
+	glEnd();
+
+    glSwapBuffers();
 }
 
 
