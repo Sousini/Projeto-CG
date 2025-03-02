@@ -9,6 +9,8 @@
 #include <sstream>
 #include <cmath>
 
+using namespace std;
+
 std::ofstream createFile(const std::string &filename) {
     std::ofstream file("3d/" + filename);
 
@@ -42,8 +44,6 @@ void createPlane(int length, int divisions, const std::string &filename) {
             index++;
         }
     }
-
-
     // Criar os triângulos
     
     for(int j = 0; j < divisions; j++) {
@@ -66,17 +66,120 @@ void createPlane(int length, int divisions, const std::string &filename) {
     file.close();
 }
 
-
-
-/*void createBox(int length, int divisions, const std::string &filename) {
+void createBox(float lenght, int divisions, const std::string &filename) {
     std::ofstream file = createFile(filename);
-    
+    std::stringstream vertices;
 
+    float divisions_lenght = lenght / divisions;
+    float trans = lenght / 2;
+    // Base cima e de baixo
+    for (int i = 0; i < divisions; i++)
+    {
+        // para deslocarmos o plano para a origem
+        float z = (divisions_lenght * i) - trans;
+        float next_z = (divisions_lenght * (i + 1)) - trans;
+        for (int j = 0; j < divisions; j++)
+        {
+            float x = (divisions_lenght * j) - trans;
+            float next_x = (divisions_lenght * (j + 1)) - trans;
 
-    
-    
-}*/
+            // Parte de cima
+            // Triangulo do lado esquerdo
+            vertices << x << " " << -trans << " " << z << std::endl;
+            vertices << next_x << " " << -trans << " " << z << std::endl;
+            vertices << x << " " << -trans << " " << next_z << std::endl;
 
+            // Triangulo do lado esquerdo
+            vertices << next_x << " " << -trans << " " << z << std::endl;
+            vertices << next_x << " " << -trans << " " << next_z << std::endl;
+            vertices << x << " " << -trans << " " << next_z << std::endl;
+
+            // Parte de baixo
+            // Triangulo do lado esquerdo
+            vertices << x << " " << lenght - trans << " " << z << std::endl;
+            vertices << x << " " << lenght - trans << " " << next_z << std::endl;
+            vertices << next_x << " " << lenght - trans << " " << z << std::endl;
+
+            // Triangulo do lado esquerdo
+            vertices << next_x << " " << lenght - trans << " " << z << std::endl;
+            vertices << x << " " << lenght - trans << " " << next_z << std::endl;
+            vertices << next_x << " " << lenght - trans << " " << next_z << std::endl;
+        }
+    }
+
+    // Lateral 1 e 3
+    for (int i = 0; i < divisions; i++)
+    {
+        // para deslocarmos o plano para a origem
+        float z = (divisions_lenght * i) - trans;
+        float next_z = (divisions_lenght * (i + 1)) - trans;
+        for (int j = 0; j < divisions; j++)
+        {
+            float y = (divisions_lenght * j) - trans;
+            float next_y = (divisions_lenght * (j + 1)) - trans;
+
+            // Parte de cima
+            // Triangulo do lado esquerdo
+            vertices << -trans << " " << y << " " << z << std::endl;
+            vertices << -trans << " " << y << " " << next_z << std::endl;
+            vertices << -trans << " " << next_y << " " << z << std::endl;
+
+            // Triangulo do lado esquerdo
+            vertices << -trans << " " << next_y << " " << z << std::endl;
+            vertices << -trans << " " << y << " " << next_z << std::endl;
+            vertices << -trans << " " << next_y << " " << next_z << std::endl;
+
+            // Parte de Baixo
+            // Triangulo do lado esquerdo
+            vertices << lenght - trans << " " << y << " " << z << std::endl;
+            vertices << lenght - trans << " " << next_y << " " << z << std::endl;
+            vertices << lenght - trans << " " << y << " " << next_z << std::endl;
+
+            // Triangulo do lado esquerdo
+            vertices << lenght - trans << " " << next_y << " " << z << std::endl;
+            vertices << lenght - trans << " " << next_y << " " << next_z << std::endl;
+            vertices << lenght - trans << " " << y << " " << next_z << std::endl;
+        }
+    }
+
+    // Lateral 2 e 4
+    for (int i = 0; i < divisions; i++)
+    {
+        // para deslocarmos o plano para a origem
+        float x = (divisions_lenght * i) - trans;
+        float next_x = (divisions_lenght * (i + 1)) - trans;
+        for (int j = 0; j < divisions; j++)
+        {
+            float y = (divisions_lenght * j) - trans;
+            float next_y = (divisions_lenght * (j + 1)) - trans;
+
+            // Parte de cima
+            // Triangulo do lado esquerdo
+            vertices << x << " " << y << " " << -trans << std::endl;
+            vertices << x << " " << next_y << " " << -trans << std::endl;
+            vertices << next_x << " " << y << " " << -trans << std::endl;
+
+            // Triangulo do lado esquerdo
+            vertices << x << " " << next_y << " " << -trans << std::endl;
+            vertices << next_x << " " << next_y << " " << -trans << std::endl;
+            vertices << next_x << " " << y << " " << -trans << std::endl;
+
+            // Parte de Baixo
+            // Triangulo do lado esquerdo
+            vertices << x << " " << y << " " << lenght - trans << std::endl;
+            vertices << next_x << " " << y << " " << lenght - trans << std::endl;
+            vertices << x << " " << next_y << " " << lenght - trans << std::endl;
+
+            // Triangulo do lado esquerdo
+            vertices << x << " " << next_y << " " << lenght - trans << std::endl;
+            vertices << next_x << " " << y << " " << lenght - trans << std::endl;
+            vertices << next_x << " " << next_y << " " << lenght - trans << std::endl;
+        }
+    }
+    
+    file << vertices.str();
+    file.close();
+}
 
 void createSphere(int radius, int slices, int stacks,const std::string &filename) {
     std::ofstream file = createFile(filename);
@@ -146,6 +249,71 @@ void createSphere(int radius, int slices, int stacks,const std::string &filename
     file.close();
 }
 
+void createCone(float radius, float height, int slices, int stacks,const std::string &filename)
+{
+    std::ofstream file = createFile(filename);
+    std::stringstream vertices;
+
+    float slice = (2 * M_PI) / slices;
+
+    // Lateral
+    float height_stack = height / stacks;
+    for (int i = 0; i < stacks; i++)
+    {
+        for (int j = 0; j < slices; j++)
+        {
+            float ang1 = slice * j;
+            float ang2 = ang1 + slice;
+
+            // Alturas das stacks
+            float y = i * height_stack;
+            float next_y = (i + 1) * height_stack;
+
+            // Pontos do cilindro
+            float x1 = radius * sin(ang1) * (stacks - i) / stacks;
+            float z1 = radius * cos(ang1) * (stacks - i) / stacks;
+            float next_x1 = radius * sin(ang2) * (stacks - i) / stacks;
+            float next_z1 = radius * cos(ang2) * (stacks - i) / stacks;
+
+            // Pontos do cilindro
+            float x2 = radius * sin(ang1) * (stacks - i - 1) / stacks;
+            float z2 = radius * cos(ang1) * (stacks - i - 1) / stacks;
+            float next_x2 = radius * sin(ang2) * (stacks - i - 1) / stacks;
+            float next_z2 = radius * cos(ang2) * (stacks - i - 1) / stacks;
+
+            // Triangulos da esquerda
+            vertices << x2 << " " << next_y << " " << z2 << std::endl;
+            vertices << next_x1 << " " << y << " " << next_z1 << std::endl;
+            vertices << next_x2 << " " << next_y << " " << next_z2 << std::endl;
+
+            // Triangulos da direita
+            vertices << x1 << " " << y << " " << z1 << std::endl;
+            vertices << next_x1 << " " << y << " " << next_z1 << std::endl;
+            vertices << x2 << " " << next_y << " " << z2 << std::endl;
+        }
+    }
+
+    // Base
+    for (int i = 0; i < slices; i++)
+    {
+        // Radianos da base do cilindro
+        float ang1 = slice * i;
+        float ang2 = ang1 + slice;
+
+        // Pontos do cilindro
+        float x = radius * sin(ang1);
+        float z = radius * cos(ang1);
+        float next_x = radius * sin(ang2);
+        float next_z = radius * cos(ang2);
+
+        // Cada triangulo
+        vertices << 0 << " " << 0 << " " << 0 << std::endl;
+        vertices << next_x << " " << 0 << " " << next_z << std::endl;
+        vertices << x << " " << 0 << " " << z << std::endl;
+    }
+    file << vertices.str();
+    file.close();
+}
 
 // main para testar o plane
 
@@ -154,6 +322,9 @@ int main(int argc, char* argv[]) {
         std::cerr << "Usage:\n";
         std::cerr << "  " << argv[0] << " plane <length> <divisions> <filename>\n";
         std::cerr << "  " << argv[0] << " sphere <radius> <slices> <stacks> <filename>\n";
+        std::cerr << "  " << argv[0] << " box <length> <divisions> <filename>\n";
+        std::cerr << "  " << argv[0] << " cone <radius> <height> <slices> <stacks> <filename>\n";
+        // todo cilindro
         return 1;
     }
 
@@ -186,7 +357,34 @@ int main(int argc, char* argv[]) {
         createSphere(radius, slices, stacks, filename);
         std::cout << "Sphere file '" << filename << "' generated successfully!\n";
 
-    } else {
+    } else if (shape == "box") {
+        if (argc != 5) {
+            std::cerr << "Usage: " << argv[0] << " plane <length> <divisions> <filename>\n";
+            return 1;
+        }
+
+        float length = std::stof(argv[2]);
+        int divisions = std::stoi(argv[3]);
+        std::string filename = argv[4];
+        createBox(length, divisions, filename);
+        std::cout << "Box file '" << filename << "' generated successfully!\n";
+    } else if (shape == "cone") {
+        if (argc != 7) {
+            std::cerr << "Usage: " << argv[0] << " cone <radius> <height> <slices> <stacks> <filename>\n";
+            return 1;
+        }
+
+        float radius = std::stof(argv[2]);
+        float height = std::stof(argv[3]);
+        int slices = std::stoi(argv[4]);
+        int stacks = std::stoi(argv[5]);
+        std::string filename = argv[6];
+
+        createCone(radius, height, slices, stacks, filename);
+        std::cout << "Cone file '" << filename << "' generated successfully!\n";
+
+    }
+     else {
         std::cerr << "Error: Unsupported shape '" << shape << "'\n";
         return 1;
     }
