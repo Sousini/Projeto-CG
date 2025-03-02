@@ -114,7 +114,6 @@ void parseXML(void) {
 void drawModel(void)
 {
     string t;
-	int i = 0;
     stringstream ss(toDrawModels);
 	while (getline(ss,t,';'))
 	{
@@ -238,7 +237,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(width, height);
-	glutCreateWindow("phase1");
+	glutCreateWindow("CG_G11");
 	
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);

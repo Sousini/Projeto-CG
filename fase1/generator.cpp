@@ -72,87 +72,87 @@ void createBox(float lenght, int divisions, const string &filename) {
     stringstream vertices;
 
     float size = lenght / divisions;
-    float trans = lenght / 2;
+    float meio = lenght / 2;
     
     for (int i = 0; i < divisions; i++)
     {
 
-        float pz = (size * i) - trans;
-        float pz2 = (size * (i + 1)) - trans;
+        float pz = (size * i) - meio;
+        float pz2 = (size * (i + 1)) - meio;
         for (int j = 0; j < divisions; j++)
         {
-            float px = (size * j) - trans;
-            float px2 = (size * (j + 1)) - trans;
+            float px = (size * j) - meio;
+            float px2 = (size * (j + 1)) - meio;
 
-            vertices << px << " " << -trans << " " << pz << endl;
-            vertices << px2 << " " << -trans << " " << pz << endl;
-            vertices << px << " " << -trans << " " << pz2 << endl;
+            vertices << px << " " << -meio << " " << pz << endl;
+            vertices << px2 << " " << -meio << " " << pz << endl;
+            vertices << px << " " << -meio << " " << pz2 << endl;
 
-            vertices << px2 << " " << -trans << " " << pz << endl;
-            vertices << px2 << " " << -trans << " " << pz2 << endl;
-            vertices << px << " " << -trans << " " << pz2 << endl;
+            vertices << px2 << " " << -meio << " " << pz << endl;
+            vertices << px2 << " " << -meio << " " << pz2 << endl;
+            vertices << px << " " << -meio << " " << pz2 << endl;
 
-            vertices << px << " " << lenght - trans << " " << pz << endl;
-            vertices << px << " " << lenght - trans << " " << pz2 << endl;
-            vertices << px2 << " " << lenght - trans << " " << pz << endl;
+            vertices << px << " " << lenght - meio << " " << pz << endl;
+            vertices << px << " " << lenght - meio << " " << pz2 << endl;
+            vertices << px2 << " " << lenght - meio << " " << pz << endl;
 
-            vertices << px2 << " " << lenght - trans << " " << pz << endl;
-            vertices << px << " " << lenght - trans << " " << pz2 << endl;
-            vertices << px2 << " " << lenght - trans << " " << pz2 << endl;
+            vertices << px2 << " " << lenght - meio << " " << pz << endl;
+            vertices << px << " " << lenght - meio << " " << pz2 << endl;
+            vertices << px2 << " " << lenght - meio << " " << pz2 << endl;
         }
     }
 
     for (int i = 0; i < divisions; i++)
     {
-        float pz = (size * i) - trans;
-        float pz2 = (size * (i + 1)) - trans;
+        float pz = (size * i) - meio;
+        float pz2 = (size * (i + 1)) - meio;
         for (int j = 0; j < divisions; j++)
         {
-            float y = (size * j) - trans;
-            float next_y = (size * (j + 1)) - trans;
+            float py = (size * j) - meio;
+            float py2 = (size * (j + 1)) - meio;
 
-            vertices << -trans << " " << y << " " << pz << endl;
-            vertices << -trans << " " << y << " " << pz2 << endl;
-            vertices << -trans << " " << next_y << " " << pz << endl;
+            vertices << -meio << " " << py << " " << pz << endl;
+            vertices << -meio << " " << py << " " << pz2 << endl;
+            vertices << -meio << " " << py2 << " " << pz << endl;
 
-            vertices << -trans << " " << next_y << " " << pz << endl;
-            vertices << -trans << " " << y << " " << pz2 << endl;
-            vertices << -trans << " " << next_y << " " << pz2 << endl;
+            vertices << -meio << " " << py2 << " " << pz << endl;
+            vertices << -meio << " " << py << " " << pz2 << endl;
+            vertices << -meio << " " << py2 << " " << pz2 << endl;
 
-            vertices << lenght - trans << " " << y << " " << pz << endl;
-            vertices << lenght - trans << " " << next_y << " " << pz << endl;
-            vertices << lenght - trans << " " << y << " " << pz2 << endl;
+            vertices << lenght - meio << " " << py << " " << pz << endl;
+            vertices << lenght - meio << " " << py2 << " " << pz << endl;
+            vertices << lenght - meio << " " << py << " " << pz2 << endl;
 
-            vertices << lenght - trans << " " << next_y << " " << pz << endl;
-            vertices << lenght - trans << " " << next_y << " " << pz2 << endl;
-            vertices << lenght - trans << " " << y << " " << pz2 << endl;
+            vertices << lenght - meio << " " << py2 << " " << pz << endl;
+            vertices << lenght - meio << " " << py2 << " " << pz2 << endl;
+            vertices << lenght - meio << " " << py << " " << pz2 << endl;
         }
     }
 
     for (int i = 0; i < divisions; i++)
     {
-        float px = (size * i) - trans;
-        float px2 = (size * (i + 1)) - trans;
+        float px = (size * i) - meio;
+        float px2 = (size * (i + 1)) - meio;
         for (int j = 0; j < divisions; j++)
         {
-            float y = (size * j) - trans;
-            float next_y = (size * (j + 1)) - trans;
+            float py = (size * j) - meio;
+            float py2 = (size * (j + 1)) - meio;
 
-            vertices << px << " " << y << " " << -trans << endl;
-            vertices << px << " " << next_y << " " << -trans << endl;
-            vertices << px2 << " " << y << " " << -trans << endl;
+            vertices << px << " " << py << " " << -meio << endl;
+            vertices << px << " " << py2 << " " << -meio << endl;
+            vertices << px2 << " " << py << " " << -meio << endl;
 
-            vertices << px << " " << next_y << " " << -trans << endl;
-            vertices << px2 << " " << next_y << " " << -trans << endl;
-            vertices << px2 << " " << y << " " << -trans << endl;
+            vertices << px << " " << py2 << " " << -meio << endl;
+            vertices << px2 << " " << py2 << " " << -meio << endl;
+            vertices << px2 << " " << py << " " << -meio << endl;
 
-            vertices << px << " " << y << " " << lenght - trans << endl;
-            vertices << px2 << " " << y << " " << lenght - trans << endl;
-            vertices << px << " " << next_y << " " << lenght - trans << endl;
+            vertices << px << " " << py << " " << lenght - meio << endl;
+            vertices << px2 << " " << py << " " << lenght - meio << endl;
+            vertices << px << " " << py2 << " " << lenght - meio << endl;
 
-            vertices << px << " " << next_y << " " << lenght - trans << endl;
-            vertices << px2 << " " << y << " " << lenght - trans << endl;
-            vertices << px2 << " " << next_y << " " << lenght - trans << endl;
+            vertices << px << " " << py2 << " " << lenght - meio << endl;
+            vertices << px2 << " " << py << " " << lenght - meio << endl;
+            vertices << px2 << " " << py2 << " " << lenght - meio << endl;
         }
     }
     
@@ -164,7 +164,7 @@ void createSphere(int radius, int slices, int stacks,const string &filename) {
     ofstream file = createFile(filename);
     stringstream vertices;
 
-    float px1, py1, pz1, px2, py2, pz2, px3, pz3, px4, pz4;
+    float px3, pz3, px4, pz4;
 
 
     //angulos
@@ -220,7 +220,6 @@ void createCone(float radius, float height, int slices, int stacks,const string 
 
     float slice = (2 * M_PI) / slices;
 
-    float height_stack = height / stacks;
     for (int i = 0; i < stacks; i++)
     {
         for (int j = 0; j < slices; j++)
@@ -228,8 +227,8 @@ void createCone(float radius, float height, int slices, int stacks,const string 
             float ang1 = slice * j;
             float ang2 = ang1 + slice;
 
-            float py = i * height_stack;
-            float py2 = (i + 1) * height_stack;
+            float py = i * (height / stacks);
+            float py2 = (i + 1) * (height / stacks);
 
             float px = radius * sin(ang1) * (stacks - i) / stacks;
             float pz = radius * cos(ang1) * (stacks - i) / stacks;
@@ -278,7 +277,6 @@ int main(int argc, char* argv[]) {
         cerr << "  " << argv[0] << " sphere <radius> <slices> <stacks> <filename>\n";
         cerr << "  " << argv[0] << " box <length> <divisions> <filename>\n";
         cerr << "  " << argv[0] << " cone <radius> <height> <slices> <stacks> <filename>\n";
-        // todo cilindro
         return 1;
     }
 
