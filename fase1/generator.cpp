@@ -219,30 +219,30 @@ void createCone(float radius, float height, int slices, int stacks,const string 
     stringstream vertices;
 
     float slice = (2 * M_PI) / slices;
-
+    float altura = (height / stacks);
     for (int i = 0; i < stacks; i++)
     {
         for (int j = 0; j < slices; j++)
         {
-            float ang1 = slice * j;
-            float ang2 = ang1 + slice;
+            float angAtual = slice * i;
+            float angProx = angAtual + slice;
 
-            float py = i * (height / stacks);
-            float py2 = (i + 1) * (height / stacks);
+            float py = i * altura;
+            float py2 = (i + 1) * altura;
 
-            float px = radius * sin(ang1) * (stacks - i) / stacks;
-            float pz = radius * cos(ang1) * (stacks - i) / stacks;
-            float px2 = radius * sin(ang2) * (stacks - i) / stacks;
-            float pz2 = radius * cos(ang2) * (stacks - i) / stacks;
+            float px = radius * sin(angAtual) * (stacks - i) / stacks;
+            float pz = radius * cos(angAtual) * (stacks - i) / stacks;
+            float px2 = radius * sin(angProx) * (stacks - i) / stacks;
+            float pz2 = radius * cos(angProx) * (stacks - i) / stacks;
 
-            float x2 = radius * sin(ang1) * (stacks - i - 1) / stacks;
-            float z2 = radius * cos(ang1) * (stacks - i - 1) / stacks;
-            float next_x2 = radius * sin(ang2) * (stacks - i - 1) / stacks;
-            float next_z2 = radius * cos(ang2) * (stacks - i - 1) / stacks;
+            float x2 = radius * sin(angAtual) * (stacks - i - 1) / stacks;
+            float z2 = radius * cos(angAtual) * (stacks - i - 1) / stacks;
+            float x2Prox = radius * sin(angProx) * (stacks - i - 1) / stacks;
+            float z2Prox = radius * cos(angProx) * (stacks - i - 1) / stacks;
 
             vertices << x2 << " " << py2 << " " << z2 << endl;
             vertices << px2 << " " << py << " " << pz2 << endl;
-            vertices << next_x2 << " " << py2 << " " << next_z2 << endl;
+            vertices << x2Prox << " " << py2 << " " << z2Prox << endl;
 
             vertices << px << " " << py << " " << pz << endl;
             vertices << px2 << " " << py << " " << pz2 << endl;
@@ -252,13 +252,13 @@ void createCone(float radius, float height, int slices, int stacks,const string 
 
     for (int i = 0; i < slices; i++)
     {
-        float ang1 = slice * i;
-        float ang2 = ang1 + slice;
+        float angAtual = slice * i;
+        float angProx = angAtual + slice;
 
-        float px = radius * sin(ang1);
-        float pz = radius * cos(ang1);
-        float px2 = radius * sin(ang2);
-        float pz2 = radius * cos(ang2);
+        float px = radius * sin(angAtual);
+        float pz = radius * cos(angAtual);
+        float px2 = radius * sin(angProx);
+        float pz2 = radius * cos(angProx);
 
         vertices << 0 << " " << 0 << " " << 0 << endl;
         vertices << px2 << " " << 0 << " " << pz2 << endl;
