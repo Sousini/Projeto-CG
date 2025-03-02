@@ -17,7 +17,6 @@ float posX=0, posY=0, posZ=0;
 float lookX=0, lookY=0, lookZ=0;
 float upX=0, upY=0, upZ=0;
 
-//Variaveis da Projeção
 float fov=60, near=1, far=1000;
 string toDrawModels="";
 
@@ -34,21 +33,13 @@ void spherical2Cartesian() {
 
 void changeSize(int w, int h)
 {
-	// Prevent a divide by zero, when window is too short
-	// (you can�t make a window with zero width).
 	if (h == 0)
 		h = 1;
-	// compute window's aspect ratio
 	float ratio = w * 1.0f / h;
-	// Set the projection matrix as current
 	glMatrixMode(GL_PROJECTION);
-	// Load the identity matrix
 	glLoadIdentity();
-	// Set the viewport to be the entire window
 	glViewport(0, 0, w, h);
-	// Set the perspective
 	gluPerspective(fov, ratio, near, far);
-	// return to the model view matrix mode
 	glMatrixMode(GL_MODELVIEW);
 }
 
@@ -122,22 +113,19 @@ void parseXML(void) {
 
 void drawModel(void)
 {
-	std::string model_name="";
     string t;
 	int i = 0;
     stringstream ss(toDrawModels);
-	//Para cada modelo, desenhar o que está no path + model
 	while (getline(ss,t,';'))
 	{
-		model_name = t;
-		std::string line;
-		std::string path_model = "../3d/" + model_name;
+		string line;
+		string path_model = "../3d/" + t;
 		ifstream file(path_model);
 		float x, y, z;
 
 		if (!file.is_open())
 		{
-            cout << "ERROR loading " << t << " model";
+            cerr << "ERROR loading " << t << " model";
 		}else{
             glBegin(GL_TRIANGLES);
             glColor3f(1.0f, 1.0f, 1.0f);
@@ -150,7 +138,6 @@ void drawModel(void)
                 }
 			}
 			glEnd();
-			
         }
         file.close();
 	}
@@ -206,9 +193,7 @@ void processKeys(unsigned char c, int xx, int yy) {
         break;
         default:
         break;
-    }
-    
-    
+    }    
 }
 
 
@@ -247,29 +232,24 @@ void processSpecialKeys(int key, int xx, int yy) {
 
 int main(int argc, char** argv)
 {
-	//load xml
 	parseXML();
     
-	// Glut init
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(width, height);
-	glutCreateWindow("CG_TP16_phase1");
+	glutCreateWindow("phase1");
 	
-	// Callbacks
 	glutDisplayFunc(renderScene);
 	glutReshapeFunc(changeSize);
+
     glutKeyboardFunc(processKeys);
 	glutSpecialFunc(processSpecialKeys);
     
-
-	// Settings OpenGL
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	
-	// Run
 	glutMainLoop();
 	
 	return 1;
