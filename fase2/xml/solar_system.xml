@@ -1,0 +1,185 @@
+<world>
+    <window width="1200" height="750" />
+    <camera>
+        <position x="700" y="40" z="40" />
+        <lookAt x="220" y="0" z="0" />
+        <up x="0" y="1" z="0" />
+        <projection fov="60" near="1" far="1000" />
+    </camera>
+
+
+    <group>
+        <colors>
+            <color r="1.0" g="0.87" b="0" />
+        </colors>
+
+        <models>
+            <model file="sun.3d" />
+        </models>
+
+        <group>
+            <transform> 
+                <translate x="73.6225" y="0" z="0" />
+                <rotate angle="-0.03" x="1" y="0" z="0" />
+            </transform>
+
+            <colors>
+                <color r="0.66" g="0.66" b="0.66" />
+            </colors>
+
+            <models>
+                <model file="mercury.3d" />
+            </models>
+        </group>
+
+
+        <group>
+            <transform> 
+                <translate x="79.1564" y="0" z="0" />
+                <rotate angle="-177.4" x="1" y="0" z="0" />
+            </transform>
+
+            <colors>
+                <color r="1.0" g="0.8" b="0.6" />
+            </colors>
+
+            <models>
+                <model file="venus.3d" />
+            </models>
+        </group>
+
+        <group>
+            <transform> 
+                <translate x="83.9015" y="0" z="0" />
+                <rotate angle="-16.72" x="1" y="0" z="0" />
+            </transform>
+
+            <colors>
+                <color r="0.39" g="0.58" b="0.93" />
+            </colors>
+
+            <models>
+                <model file="earth.3d" />
+            </models>
+
+            <group>
+                <transform> 
+                    <translate x="0" y="0" z="2" />
+                    <rotate angle="23.4" x="1" y="0" z="0" />
+                </transform>
+                <colors>
+                    <color r="0.86" g="0.86" b="0.86" />
+                </colors>
+
+                <models>
+                    <model file="moon.3d" />
+                </models>
+            </group>
+        </group>  
+
+        <group>
+                <transform> 
+                    <translate x="92.3726" y="0" z="0" />
+                    <rotate angle="-25.2" x="1" y="0" z="0" />
+                </transform>
+
+                <colors>
+                    <color r="0.78" g="0.20" b="0.20" />
+                </colors>
+
+                <models>
+                    <model file="mars.3d" />
+                </models>
+        </group>
+
+        <group>
+                <transform> 
+                    <translate x="147.7505" y="0" z="0" />
+                    <rotate angle="-3.1" x="1" y="0" z="0" />
+                </transform>
+
+                <colors>
+                    <color r="0.55" g="0.27" b="0.07" />
+                </colors>
+
+                <models>
+                    <model file="jupiter.3d" />
+                </models>
+        </group>
+
+        <group>
+                <transform> 
+                    <translate x="219.3686" y="0" z="0" />
+                    <rotate angle="-26.7" x="1" y="0" z="0" />
+                </transform>
+                <colors>
+                    <color r="0.76" g="0.7" b="0.5" />
+                </colors>
+
+                <models>
+                    <model file="saturn.3d" />
+                    <model file="saturn_ringB.3d" />
+                </models>
+
+            <group>
+                    <transform>
+                       <translate x="0" y="0.3" z="0" />
+                    </transform>
+
+                    <colors>
+                        <color r="0.31" g="0.24" b="0.16" />
+                    </colors>
+
+                    <models>
+                        <model file="saturn_ringA.3d" />
+                        <model file="saturn_ringC.3d" />
+                    </models>
+            </group>
+        </group>
+
+        <group>
+            <transform> 
+                <translate x="370.0868" y="0" z="0" />
+                <rotate angle="-97.8" x="1" y="0" z="0" />
+            </transform>
+
+            <colors>
+                <color r="0.67" g="1.0" b="1.0" />
+            </colors>
+
+            <models>
+                <model file="uranus.3d" />
+            </models>
+        
+
+            <group>
+                <transform>
+                    <translate x="0" y="0.2" z="0" />
+                </transform>
+
+                <colors>
+                    <color r="0.39" g="0.39" b="0.39" />
+                </colors>
+
+
+                <models>
+                    <model file="uranus_ring.3d" />
+                </models>
+            </group>
+        </group>
+
+        <group>
+                <transform> 
+                    <translate x="535.368" y="0" z="0" />
+                    <rotate angle="-28.3" x="1" y="0" z="0   " />
+                </transform>
+                <colors>
+                    <color r="0.12" g="0.56" b="1.0" />
+                </colors>
+
+                <models>
+                    <model file="neptune.3d" />
+                </models>
+        </group>
+    </group>
+</world>

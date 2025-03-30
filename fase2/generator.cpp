@@ -160,7 +160,7 @@ void createBox(float lenght, int divisions, const string &filename) {
     file.close();
 }
 
-void createSphere(int radius, int slices, int stacks,const string &filename) {
+void createSphere(float radius, int slices, int stacks,const string &filename) {
     ofstream file = createFile(filename);
     stringstream vertices;
 
@@ -268,6 +268,53 @@ void createCone(float radius, float height, int slices, int stacks,const string 
     file.close();
 }
 
+
+void createTorus(float innerRadius, float outerRadius, int sides, int rings, const string &filename) {
+    ofstream file = createFile(filename);
+    stringstream vertices;
+
+    float ring = (2 * M_PI) / rings;
+    float side = (2 * M_PI) / sides;
+
+    float radius_torus = (outerRadius - innerRadius) / 2;
+    float center_torus = innerRadius + radius_torus;
+
+    for (int i = 0; i < rings; i++)
+    {
+        for (int j = 0; j < sides; j++)
+        {
+
+            float y = radius_torus * sin(i * ring);
+            float next_y = radius_torus * sin((i + 1) * ring);
+
+            float x1 = (center_torus + radius_torus * cos(i * ring)) * cos(j * side);
+            float z1 = (center_torus + radius_torus * cos(i * ring)) * sin(j * side);
+            float next_x1 = (center_torus + radius_torus * cos(i * ring)) * cos((j + 1) * side);
+            float next_z1 = (center_torus + radius_torus * cos(i * ring)) * sin((j + 1) * side);
+
+            float x2 = (center_torus + radius_torus * cos((i + 1) * ring)) * cos(j * side);
+            float z2 = (center_torus + radius_torus * cos((i + 1) * ring)) * sin(j * side);
+            float next_x2 = (center_torus + radius_torus * cos((i + 1) * ring)) * cos((j + 1) * side);
+            float next_z2 = (center_torus + radius_torus * cos((i + 1) * ring)) * sin((j + 1) * side);
+
+            // primeiro triângulo
+            vertices << x1 << ' ' << y << ' ' << z1 << '\n';
+            vertices << x2 << ' ' << next_y << ' ' << z2 << '\n';
+            vertices << next_x1 << ' ' << y << ' ' << next_z1 << '\n';
+            // segundo triângulo
+            vertices << x2 << ' ' << next_y << ' ' << z2 << '\n';
+            vertices << next_x2 << ' ' << next_y << ' ' << next_z2 << '\n';
+            vertices << next_x1 << ' ' << y << ' ' << next_z1 << '\n';
+
+            
+        }
+    }
+
+    file << vertices.str();
+    file.close();
+}
+
+
 // main para testar o plane
 
 int main(int argc, char* argv[]) {
@@ -277,6 +324,7 @@ int main(int argc, char* argv[]) {
         cerr << "  " << argv[0] << " sphere <radius> <slices> <stacks> <filename>\n";
         cerr << "  " << argv[0] << " box <length> <divisions> <filename>\n";
         cerr << "  " << argv[0] << " cone <radius> <height> <slices> <stacks> <filename>\n";
+        cerr << "  " << argv[0] << " torus <innerRadius> <outerRadius> <slices> <loops> <filename>\n";
         return 1;
     }
 
@@ -335,8 +383,23 @@ int main(int argc, char* argv[]) {
         createCone(radius, height, slices, stacks, filename);
         cout << "Cone file '" << filename << "' generated successfully!\n";
 
-    }
-     else {
+    } else if (shape == "torus") {
+        if (argc != 7) {
+            cerr << "Usage: " << argv[0] << " torus <innerRadius> <outerRadius> <slices> <loops> <filename>\n";
+            return 1;
+        }
+
+        float innerRadius = stof(argv[2]);
+        float outerRadius = stof(argv[3]);
+        int slices = stoi(argv[4]);
+        int loops = stoi(argv[5]);
+        string filename = argv[6];
+
+        createTorus(innerRadius, outerRadius, slices, loops, filename);
+
+        cout << "Torus file '" << filename << "' generated successfully!\n";
+
+    } else {
         cerr << "Error: Unsupported shape '" << shape << "'\n";
         return 1;
     }
