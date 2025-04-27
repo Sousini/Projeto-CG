@@ -480,7 +480,7 @@ int main(int argc, char* argv[]) {
         cerr << "  " << argv[0] << " box <length> <divisions> <filename>\n";
         cerr << "  " << argv[0] << " cone <radius> <height> <slices> <stacks> <filename>\n";
         cerr << "  " << argv[0] << " torus <innerRadius> <outerRadius> <slices> <loops> <filename>\n";
-        cerr << "  " << argv[0] << " bezier <patch_file> <tessellation> <filename>\n";
+        cerr << "  " << argv[0] << " patch <patch_file> <tessellation> <filename>\n";
         return 1;
     }
 

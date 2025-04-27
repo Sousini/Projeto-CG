@@ -16,7 +16,7 @@
 using namespace std;
 using namespace tinyxml2;
 
-const char *config_path = "../tests/test_files_phase_3/test_3_1.xml";
+const char *path = "../tests/test_files_phase_3/test_3_1.xml";
 
 int width = 800, height = 800;
 float posX = 0, posY = 0, posZ = 0;
@@ -78,8 +78,7 @@ Group rootGroup;
 void normalize(Point &v)
 {
     float l = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-    if (l != 0.0f)
-    {
+    if (l != 0.0f){
         v.x /= l;
         v.y /= l;
         v.z /= l;
@@ -136,12 +135,10 @@ void getCatmullRomPoint(float t, Point p0, Point p1, Point p2, Point p3, Point &
 
     Point P[4] = {p0, p1, p2, p3};
 
-    for (int i = 0; i < 4; ++i)
-    {
+    for (int i = 0; i < 4; ++i){
         float a_pos = 0.0f;
         float a_deriv = 0.0f;
-        for (int j = 0; j < 4; ++j)
-        {
+        for (int j = 0; j < 4; ++j){
             a_pos += T[j] * m[j][i];
             a_deriv += T_deriv[j] * m[j][i];
         }
@@ -179,8 +176,7 @@ void loadModelVBO(Model &model)
 {
     string path_model = "../3d/" + model.filename;
     ifstream file(path_model);
-    if (!file.is_open())
-    {
+    if (!file.is_open()){
         cerr << "ERROR loading " << model.filename << " model for VBO" << endl;
         return;
     }
@@ -188,11 +184,9 @@ void loadModelVBO(Model &model)
     vector<float> vertexData;
     float x, y, z;
     string line;
-    while (getline(file, line))
-    {
+    while (getline(file, line)){
         istringstream linestream(line);
-        if (linestream >> x >> y >> z)
-        {
+        if (linestream >> x >> y >> z){
             vertexData.push_back(x);
             vertexData.push_back(y);
             vertexData.push_back(z);
@@ -212,14 +206,11 @@ void cameraXML(XMLElement *groupElement, Group &group)
     if (!groupElement)
         return;
     XMLElement *transformElement = groupElement->FirstChildElement("transform");
-    if (transformElement)
-    {
-        for (XMLElement *trans = transformElement->FirstChildElement(); trans != nullptr; trans = trans->NextSiblingElement())
-        {
+    if (transformElement){
+        for (XMLElement *trans = transformElement->FirstChildElement(); trans != nullptr; trans = trans->NextSiblingElement()){
             const char *name = trans->Value();
             Transform t;
-            if (strcmp(name, "translate") == 0)
-            {
+            if (strcmp(name, "translate") == 0){
                 t.type = TRANSLATE;
                 trans->QueryFloatAttribute("x", &t.x);
                 trans->QueryFloatAttribute("y", &t.y);
@@ -228,11 +219,9 @@ void cameraXML(XMLElement *groupElement, Group &group)
                 trans->QueryBoolAttribute("align", &t.align);
 
                 XMLElement *pointElement = trans->FirstChildElement("point");
-                if (pointElement)
-                {
+                if (pointElement){
                     t.x = t.y = t.z = 0;
-                    while (pointElement)
-                    {
+                    while (pointElement){
                         Point p;
                         pointElement->QueryFloatAttribute("x", &p.x);
                         pointElement->QueryFloatAttribute("y", &p.y);
@@ -242,8 +231,7 @@ void cameraXML(XMLElement *groupElement, Group &group)
                     }
                 }
             }
-            else if (strcmp(name, "rotate") == 0)
-            {
+            else if (strcmp(name, "rotate") == 0){
                 t.type = ROTATE;
                 trans->QueryFloatAttribute("angle", &t.angle);
                 trans->QueryFloatAttribute("time", &t.time);
@@ -251,8 +239,7 @@ void cameraXML(XMLElement *groupElement, Group &group)
                 trans->QueryFloatAttribute("y", &t.y);
                 trans->QueryFloatAttribute("z", &t.z);
             }
-            else if (strcmp(name, "scale") == 0)
-            {
+            else if (strcmp(name, "scale") == 0){
                 t.type = SCALE;
                 t.x = t.y = t.z = 1.0f;
                 trans->QueryFloatAttribute("x", &t.x);
@@ -264,17 +251,13 @@ void cameraXML(XMLElement *groupElement, Group &group)
     }
 
     XMLElement *modelsElement = groupElement->FirstChildElement("models");
-    if (modelsElement)
-    {
+    if (modelsElement){
         XMLElement *modelElement = modelsElement->FirstChildElement("model");
-        while (modelElement)
-        {
+        while (modelElement){
             const char *filename = modelElement->Attribute("file");
-            if (filename)
-            {
+            if (filename){
                 Model m;
                 m.filename = filename;
-
                 loadModelVBO(m);
                 group.models.push_back(m);
             }
@@ -283,27 +266,17 @@ void cameraXML(XMLElement *groupElement, Group &group)
     }
 
     XMLElement *colorsElement = groupElement->FirstChildElement("colors");
-    if (colorsElement)
-    {
+    if (colorsElement){
         XMLElement *colorElement = colorsElement->FirstChildElement("color");
-        if (colorElement)
-        {
+        if (colorElement){
             colorElement->QueryFloatAttribute("r", &group.color.r);
             colorElement->QueryFloatAttribute("g", &group.color.g);
             colorElement->QueryFloatAttribute("b", &group.color.b);
-
-            if (group.color.r > 1.0f || group.color.g > 1.0f || group.color.b > 1.0f)
-            {
-                group.color.r /= 255.0f;
-                group.color.g /= 255.0f;
-                group.color.b /= 255.0f;
-            }
         }
     }
 
     XMLElement *childGroupElement = groupElement->FirstChildElement("group");
-    while (childGroupElement)
-    {
+    while (childGroupElement){
         Group childGroup;
         cameraXML(childGroupElement, childGroup);
         group.childGroups.push_back(childGroup);
@@ -344,12 +317,6 @@ void loadScene(const char *filename)
             pup->QueryFloatAttribute("y", &upY);
             pup->QueryFloatAttribute("z", &upZ);
         }
-        else
-        {
-            upX = 0;
-            upY = 1;
-            upZ = 0;
-        }
         XMLElement *projection = cameradata->FirstChildElement("projection");
         if (projection)
         {
@@ -363,25 +330,16 @@ void loadScene(const char *filename)
     if (radius > 0)
     {
         beta_ = asin(posY / radius);
-
         float cosBeta = cos(beta_);
-        if (abs(cosBeta) > 1e-6)
-        {
+        if (abs(cosBeta) > 1e-6){
             float sinAlphaArg = posX / (radius * cosBeta);
-
             sinAlphaArg = std::max(-1.0f, std::min(1.0f, sinAlphaArg));
             alfa = asin(sinAlphaArg);
-
-            if (posZ < 0)
-            {
+            if (posZ < 0){
                 alfa = M_PI - alfa;
             }
-            else if (posX < 0 && posZ > 0)
-            {
-            }
         }
-        else
-        {
+        else{
             alfa = 0;
         }
     }
@@ -390,15 +348,13 @@ void loadScene(const char *filename)
         beta_ = 0;
         alfa = 0;
         radius = 10;
-
         posX = radius * cos(beta_) * sin(alfa);
         posY = radius * sin(beta_);
         posZ = radius * cos(beta_) * cos(alfa);
     }
 
     XMLElement *rootGroupElement = pworld->FirstChildElement("group");
-    if (rootGroupElement)
-    {
+    if (rootGroupElement){
         cameraXML(rootGroupElement, rootGroup);
     }
 }
@@ -406,16 +362,12 @@ void loadScene(const char *filename)
 void drawModel(const Group &group)
 {
     glPushMatrix();
-    for (const auto &transform : group.transforms)
-    {
-        if (transform.type == TRANSLATE)
-        {
-            if (transform.time > 0 && transform.points.size() >= 4)
-            {
+    for (const auto &transform : group.transforms){
+        if (transform.type == TRANSLATE){
+            if (transform.time > 0 && transform.points.size() >= 4){
                 glPushAttrib(GL_CURRENT_BIT);
                 glBegin(GL_LINE_STRIP);
-                for (int i = 0; i <= 100; ++i)
-                {
+                for (int i = 0; i <= 100; ++i){
                     Point curve_pos, curve_deriv;
                     float curve_gt = static_cast<float>(i) / 100;
                     getGlobalCatmullRomPoint(curve_gt, transform.points, curve_pos, curve_deriv);
@@ -429,8 +381,7 @@ void drawModel(const Group &group)
                 getGlobalCatmullRomPoint(gt, transform.points, pos, deriv);
                 glTranslatef(pos.x, pos.y, pos.z);
 
-                if (transform.align)
-                {
+                if (transform.align){
                     Point x_axis, y_axis, z_axis;
                     z_axis = deriv;
                     normalize(z_axis);
@@ -443,41 +394,33 @@ void drawModel(const Group &group)
                     glMultMatrixf(rotMatrix);
                 }
             }
-            else
-            {
+            else{
                 glTranslatef(transform.x, transform.y, transform.z);
             }
         }
-        else if (transform.type == ROTATE)
-        {
-            if (transform.time > 0)
-            {
+        else if (transform.type == ROTATE){
+            if (transform.time > 0){
                 float current_angle = fmod(time_elapsed * (360.0f / transform.time), 360.0f);
                 glRotatef(current_angle, transform.x, transform.y, transform.z);
             }
-            else
-            {
+            else{
                 glRotatef(transform.angle, transform.x, transform.y, transform.z);
             }
         }
-        else if (transform.type == SCALE)
-        {
+        else if (transform.type == SCALE){
             glScalef(transform.x, transform.y, transform.z);
         }
     }
     glColor3f(group.color.r, group.color.g, group.color.b);
-    for (const auto &model : group.models)
-    {
-        if (model.vboId != 0 && model.vertexCount > 0)
-        {
+    for (const auto &model : group.models){
+        if (model.vboId != 0 && model.vertexCount > 0){
             glBindBuffer(GL_ARRAY_BUFFER, model.vboId);
             glVertexPointer(3, GL_FLOAT, 0, 0);
             glDrawArrays(GL_TRIANGLES, 0, model.vertexCount);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
     }
-    for (const auto &childGroup : group.childGroups)
-    {
+    for (const auto &childGroup : group.childGroups){
         drawModel(childGroup);
     }
     glPopMatrix();
@@ -485,14 +428,12 @@ void drawModel(const Group &group)
 
 void spherical2Cartesian()
 {
-    if (camera_mode == 0)
-    {
+    if (camera_mode == 0){
         posX = radius * cos(beta_) * sin(alfa);
         posY = radius * sin(beta_);
         posZ = radius * cos(beta_) * cos(alfa);
     }
-    else
-    {
+    else{
         float lx = cos(beta_) * sin(alfa);
         float ly = sin(beta_);
         float lz = cos(beta_) * cos(alfa);
@@ -518,7 +459,6 @@ void changeSize(int w, int h)
 
 void renderScene()
 {
-
     int time_now = glutGet(GLUT_ELAPSED_TIME);
     float delta_time_sec = (time_now - timebase) / 1000.0f;
     timebase = time_now;
@@ -562,17 +502,15 @@ void renderScene()
 void processKeys(unsigned char c, int xx, int yy)
 {
     float moveSpeed = 0.5f * radius * 0.1;
-
     switch (c)
     {
     case 'r':
-        loadScene(config_path);
+        loadScene(path);
         break;
     case 'm':
         camera_mode = 1 - camera_mode;
         if (camera_mode == 0)
         {
-
             float dx = posX - lookX;
             float dy = posY - lookY;
             float dz = posZ - lookZ;
@@ -582,63 +520,52 @@ void processKeys(unsigned char c, int xx, int yy)
                 beta_ = asin(dy / radius);
 
                 float cosBeta = cos(beta_);
-                if (abs(cosBeta) > 1e-5)
-                {
+                if (abs(cosBeta) > 1e-5){
                     float sinAlphaArg = dx / (radius * cosBeta);
                     sinAlphaArg = std::max(-1.0f, std::min(1.0f, sinAlphaArg));
                     alfa = asin(sinAlphaArg);
 
-                    if (dz < 0)
-                    {
+                    if (dz < 0){
                         alfa = M_PI - alfa;
                     }
                 }
-                else
-                {
+                else{
                     alfa = (dx > 0) ? M_PI / 2.0 : -M_PI / 2.0;
                 }
             }
-            else
-            {
+            else{
                 radius = 5.0;
                 alfa = 0;
                 beta_ = 0;
             }
-
             spherical2Cartesian();
         }
-        else
-        {
+        else{
             float dx = lookX - posX;
             float dy = lookY - posY;
             float dz = lookZ - posZ;
             float len = sqrt(dx * dx + dy * dy + dz * dz);
-            if (len > 1e-5)
-            {
+            if (len > 1e-5){
                 dx /= len;
                 dy /= len;
                 dz /= len;
                 beta_ = asin(dy);
 
                 float cosBeta = cos(beta_);
-                if (abs(cosBeta) > 1e-5)
-                {
+                if (abs(cosBeta) > 1e-5){
                     float sinAlphaArg = dx / cosBeta;
                     sinAlphaArg = std::max(-1.0f, std::min(1.0f, sinAlphaArg));
                     alfa = asin(sinAlphaArg);
 
-                    if (dz < 0)
-                    {
+                    if (dz < 0){
                         alfa = M_PI - alfa;
                     }
                 }
-                else
-                {
+                else{
                     alfa = (dx > 0) ? M_PI / 2.0 : -M_PI / 2.0;
                 }
             }
-            else
-            {
+            else{
                 alfa = 0;
                 beta_ = 0;
             }
@@ -801,8 +728,7 @@ void processSpecialKeys(int key, int xx, int yy)
 
 void processMouseButtons(int button, int state, int xx, int yy)
 {
-    if (state == GLUT_DOWN)
-    {
+    if (state == GLUT_DOWN){
         startX = xx;
         startY = yy;
         if (button == GLUT_LEFT_BUTTON)
@@ -812,8 +738,7 @@ void processMouseButtons(int button, int state, int xx, int yy)
         else
             tracking = 0;
     }
-    else if (state == GLUT_UP)
-    {
+    else if (state == GLUT_UP){
         tracking = 0;
     }
 }
@@ -823,8 +748,7 @@ void processMouseMotion(int xx, int yy)
     int deltaX = xx - startX;
     int deltaY = yy - startY;
 
-    if (tracking == 1)
-    {
+    if (tracking == 1){
         alfa -= deltaX * 0.005f;
         beta_ += deltaY * 0.005f;
 
@@ -835,8 +759,7 @@ void processMouseMotion(int xx, int yy)
 
         spherical2Cartesian();
     }
-    else if (tracking == 2)
-    {
+    else if (tracking == 2){
         if (camera_mode == 0)
         {
             radius -= deltaY * 0.1f;
@@ -859,7 +782,7 @@ int main(int argc, char **argv)
     glutCreateWindow("CG G11");
     glewInit();
 
-    loadScene(config_path);
+    loadScene(path);
 
     glutReshapeWindow(width, height);
 
