@@ -16,7 +16,7 @@
 using namespace std;
 using namespace tinyxml2;
 
-const char *path = "../tests/test_files_phase_3/test_3_1.xml";
+const char *path = "../tests/test_files_phase_3/solar_system.xml";
 
 int width = 800, height = 800;
 float posX = 0, posY = 0, posZ = 0;
@@ -472,27 +472,27 @@ void renderScene()
               upX, upY, upZ);
 
     // with colors use this one :)
-    // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // axis
     //
-    glBegin(GL_LINES);
+    //glBegin(GL_LINES);
 
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(-100.0f, 0.0f, 0.0f);
-    glVertex3f(100.0f, 0.0f, 0.0f);
+    //glColor3f(1.0f, 0.0f, 0.0f);
+    //glVertex3f(-100.0f, 0.0f, 0.0f);
+    //glVertex3f(100.0f, 0.0f, 0.0f);
 
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(0.0f, -100.0f, 0.0f);
-    glVertex3f(0.0f, 100.0f, 0.0f);
+    //glColor3f(0.0f, 1.0f, 0.0f);
+    //glVertex3f(0.0f, -100.0f, 0.0f);
+    //glVertex3f(0.0f, 100.0f, 0.0f);
 
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, -100.0f);
-    glVertex3f(0.0f, 0.0f, 100.0f);
-    glEnd();
+    //glColor3f(0.0f, 0.0f, 1.0f);
+    //glVertex3f(0.0f, 0.0f, -100.0f);
+    //glVertex3f(0.0f, 0.0f, 100.0f);
+    //glEnd();
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     drawModel(rootGroup);
 
