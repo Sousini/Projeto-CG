@@ -1,4 +1,4 @@
-# Install script for directory: /home/vilaca/Desktop/University/3ano/CG/cg_1/fase3/engine
+# Install script for directory: /home/sousini/Programming/Projeto-CG/fase3/engine
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/vilaca/Desktop/University/3ano/CG/cg_1/fase3/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/sousini/Programming/Projeto-CG/fase3/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

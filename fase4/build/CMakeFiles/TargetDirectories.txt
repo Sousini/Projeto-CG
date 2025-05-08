@@ -1,0 +1,3 @@
+/home/sousini/Programming/Projeto-CG/fase4/build/CMakeFiles/engine.dir
+/home/sousini/Programming/Projeto-CG/fase4/build/CMakeFiles/edit_cache.dir
+/home/sousini/Programming/Projeto-CG/fase4/build/CMakeFiles/rebuild_cache.dir
